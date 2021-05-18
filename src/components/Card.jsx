@@ -1,4 +1,6 @@
 import { styled } from '@stitches/react'
+import { memo } from 'react'
+import { create } from '../utils/storage'
 
 const _Card = styled('div', {
   overflow: 'hidden',
@@ -35,6 +37,7 @@ const Column = styled('div', {
 
 const Button = styled('button', {
   padding: '.75rem',
+  cursor: 'pointer',
   height: '.5rem',
   display: 'inline-flex',
   justifyContent: 'center',
@@ -49,23 +52,33 @@ const Button = styled('button', {
   }
 })
 
-const Card = () => {
+const Card = props => {
+  if (!props?.title) {
+    return null
+  }
+
+  const addToBookmarks = props => {
+    create(props)
+  }
+
   return (
     <_Card>
       <img src="https://picsum.photos/200/300" alt="random" width="100" height="80" />
       <Column>
-        <p className="title">Lorem ipsum dolor sit amet consectetur</p>
-        <p className="source">Lorem ipsum dolor sit amet consectetur</p>
-        <Button>
+        <a href={props.url?.url} className="title">
+          {props.title}
+        </a>
+        <p className="source">{props.publisher}</p>
+        <Button onClick={() => addToBookmarks(props)}>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000000" viewBox="0 0 256 256">
             <rect width="256" height="256" fill="none"></rect>
             <path
               d="M192,224l-64.0074-40L64,224V48a8,8,0,0,1,8-8H184a8,8,0,0,1,8,8Z"
               fill="none"
               stroke="#000000"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="16"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="16"
             ></path>
           </svg>
         </Button>
@@ -74,4 +87,4 @@ const Card = () => {
   )
 }
 
-export default Card
+export default memo(Card)

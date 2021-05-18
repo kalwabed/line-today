@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, lazy, Suspense } from 'react'
 import { Link } from '@reach/router'
 import { styled } from '@stitches/react'
+
 import { getAllData } from '../utils/api'
 import Card from '../components/Card'
 
@@ -24,8 +25,7 @@ const Home = () => {
   useEffect(() => {
     async function getData() {
       const res = await getAllData()
-      console.log(res.result)
-      return res.result
+      setCategories(res.result.categories)
     }
     getData()
   }, [])
@@ -33,10 +33,15 @@ const Home = () => {
   return (
     <Wrapper>
       <p>Home page</p>
-      <Link to="bookmarks">to Bookmarks</Link>
+      <Link to="bookmarks">my bookmarks</Link>
       <Container>
-        <Card />
-        <Card />
+        {!categories && <p>loading...</p>}
+        {categories &&
+          categories.map(cat =>
+            cat.templates.map(temp =>
+              temp.sections[0].articles?.map(article => <Card {...article} key={article.postId} />)
+            )
+          )}
       </Container>
     </Wrapper>
   )
