@@ -34,7 +34,12 @@ const Home = () => {
             index === 1 && // to reduce browser load, load only categories with an index 1
             cat.templates.map(temp =>
               temp.sections[0].articles?.map(article => (
-                <Card {...article} key={article.postId || article.id} variant="create" handler={addBookmarkHandler} />
+                <Card
+                  {...article}
+                  key={article.title || article.publishTimeUnix}
+                  variant="create"
+                  handler={addBookmarkHandler}
+                />
               ))
             )
         )}

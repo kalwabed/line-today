@@ -24,7 +24,7 @@ const Bookmarks = () => {
       <Container>
         {bookmarks?.length === 0 && <p>empty</p>}
         {bookmarks?.map(bm => (
-          <Card {...bm} variant="remove" key={bm.postId} handler={removeHandler} />
+          <Card {...bm} variant="remove" key={bm.postId || bm.url.url} handler={removeHandler} />
         ))}
       </Container>
     </Layout>

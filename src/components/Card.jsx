@@ -67,7 +67,7 @@ const Card = props => {
         </a>
         <p className="source">{props.publisher}</p>
         {props.variant === 'create' ? (
-          <Button onClick={() => props.handler(props)}>
+          <Button onClick={() => props.handler(props)} title="Add to my bookmarks">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000000" viewBox="0 0 256 256">
               <rect width="256" height="256" fill="none"></rect>
               <path
@@ -81,7 +81,7 @@ const Card = props => {
             </svg>
           </Button>
         ) : (
-          <Button onClick={() => props.handler(props.postId)}>
+          <Button onClick={() => props.handler(props.postId)} title="Remove from my bookmarks">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000000" viewBox="0 0 256 256">
               <rect width="256" height="256" fill="none"></rect>
               <line
