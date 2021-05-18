@@ -7,18 +7,19 @@ const storage = localStorage
  *
  */
 export const create = props => {
-  const { postId, title, publisher, url } = props
-  const str = get()
-  str.push({ publisher, postId, title, url: url.url })
+  const { title, publisher, url, postId } = props
+  const str = getDataFromStorage()
+  str.push({ publisher, postId, title, url: url })
   storage.setItem(KEY, JSON.stringify(str))
 }
 
-const get = () => {
-  const items = storage.getItem(KEY) || []
-  return JSON.parse(items)
+export const getDataFromStorage = () => {
+  const items = storage.getItem(KEY)
+  return items ? JSON.parse(items) : []
 }
 
-const remove = postId => {
-  const result = get().filter(bookmark => bookmark.postId !== postId)
-  storage.removeItem(KEY)
+export const removeBookmark = postId => {
+  const result = getDataFromStorage().filter(bookmark => bookmark.postId !== postId)
+  storage.setItem(KEY, JSON.stringify(result))
+  return result
 }

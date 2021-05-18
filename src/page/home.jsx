@@ -4,20 +4,9 @@ import { styled } from '@stitches/react'
 
 import { getAllData } from '../utils/api'
 import Card from '../components/Card'
-
-const Wrapper = styled('div', {
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  margin: '1rem auto'
-})
-
-const Container = styled('div', {
-  maxWidth: '42rem',
-  margin: '.5rem auto'
-})
+import Layout from '../components/Layout'
+import Container from '../components/Container'
+import { create } from '../utils/storage'
 
 const Home = () => {
   const [categories, setCategories] = useState()
@@ -30,20 +19,27 @@ const Home = () => {
     getData()
   }, [])
 
+  const addBookmarkHandler = props => {
+    create(props)
+  }
+
   return (
-    <Wrapper>
+    <Layout>
       <p>Home page</p>
       <Link to="bookmarks">my bookmarks</Link>
       <Container>
         {!categories && <p>loading...</p>}
-        {categories &&
-          categories.map(cat =>
+        {categories?.map(
+          (cat, index) =>
+            index === 1 && // to reduce browser load, load only categories with an index 1
             cat.templates.map(temp =>
-              temp.sections[0].articles?.map(article => <Card {...article} key={article.postId} />)
+              temp.sections[0].articles?.map(article => (
+                <Card {...article} key={article.postId || article.id} variant="create" handler={addBookmarkHandler} />
+              ))
             )
-          )}
+        )}
       </Container>
-    </Wrapper>
+    </Layout>
   )
 }
 

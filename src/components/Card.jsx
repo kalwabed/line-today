@@ -1,6 +1,7 @@
 import { styled } from '@stitches/react'
 import { memo } from 'react'
-import { create } from '../utils/storage'
+
+import { create, removeBookmark } from '../utils/storage'
 
 const _Card = styled('div', {
   overflow: 'hidden',
@@ -57,31 +58,65 @@ const Card = props => {
     return null
   }
 
-  const addToBookmarks = props => {
-    create(props)
-  }
-
   return (
     <_Card>
-      <img src="https://picsum.photos/200/300" alt="random" width="100" height="80" />
+      <img src={`https://picsum.photos/seed/${props.url?.hash}/100/150`} alt="random" width="100" height="80" />
       <Column>
         <a href={props.url?.url} className="title">
           {props.title}
         </a>
         <p className="source">{props.publisher}</p>
-        <Button onClick={() => addToBookmarks(props)}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000000" viewBox="0 0 256 256">
-            <rect width="256" height="256" fill="none"></rect>
-            <path
-              d="M192,224l-64.0074-40L64,224V48a8,8,0,0,1,8-8H184a8,8,0,0,1,8,8Z"
-              fill="none"
-              stroke="#000000"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="16"
-            ></path>
-          </svg>
-        </Button>
+        {props.variant === 'create' ? (
+          <Button onClick={() => props.handler(props)}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000000" viewBox="0 0 256 256">
+              <rect width="256" height="256" fill="none"></rect>
+              <path
+                d="M192,224l-64.0074-40L64,224V48a8,8,0,0,1,8-8H184a8,8,0,0,1,8,8Z"
+                fill="none"
+                stroke="#000000"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="16"
+              ></path>
+            </svg>
+          </Button>
+        ) : (
+          <Button onClick={() => props.handler(props.postId)}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000000" viewBox="0 0 256 256">
+              <rect width="256" height="256" fill="none"></rect>
+              <line
+                x1="215.99609"
+                y1="56"
+                x2="39.99609"
+                y2="56.00005"
+                fill="none"
+                stroke="#000000"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="16"
+              ></line>
+              <line
+                x1="88"
+                y1="24"
+                x2="168"
+                y2="24"
+                fill="none"
+                stroke="#000000"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="16"
+              ></line>
+              <path
+                d="M200,56V208a8,8,0,0,1-8,8H64a8,8,0,0,1-8-8V56"
+                fill="none"
+                stroke="#000000"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="16"
+              ></path>
+            </svg>
+          </Button>
+        )}
       </Column>
     </_Card>
   )
